@@ -209,7 +209,49 @@ For a new (internal) release, the following steps are adviced;
 1. Run `npm version [major|minor|patch]`
 2. Run `npm run release`
 3. Run `npm publish`
+4. When the new Venus build, containing this release, is out: Go to https://flows.nodered.org/node/@victronenergy/node-red-contrib-victron and click the '_request refresh_' link in the sidebar of the node's page (only visible after you have logged in)
+
+ https://discourse.nodered.org/t/how-to-add-update-nodes-to-the-flow-library/25294
+
+## Debugging with VScode (developers)
+
+This describse a setup that allows debugging the Node-RED installation (and the nodes).
+
+First create a `launch.json` file in `~/.node-red/.vscode`
+```
+{
+    "version": "0.2.0",
+    "configurations": [
+     
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Launch Node-red",
+        "program": "/usr/lib/node_modules/node-red/red.js",
+        "runtimeArgs": ["--preserve-symlinks", "--experimental-modules"],
+        "env": {
+          "NO_UPDATE_NOTIFIER": "1",
+          "NODE_RED_DBUS_ADDRESS": "192.168.4.163:78"
+        }
+      },
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Debug Current File",
+        "program": "${file}"
+      },
+      { "type": "node", "request": "attach", "name": "Attach to Process", "processId": "${command:PickProcess}" } 
+      
+    ]
+  }
+```
+
+Where the `NODE\_RED\_DBUS\_ADDRESS` points to the ip address of the
+installation you want to debug (see _enable d-bus over tcp_ above).
+
+
 
 ## Miscellaneous
 
 The original issue tracking the progress can be found on [Venus repository](https://github.com/victronenergy/venus/issues/378).
+

@@ -39,6 +39,7 @@
                 Please refer to 'Value Types' box above for adjustable settings.</i>
             </div>
         </div>
+        <div class="form-info hidden" id="dbusinfo"></div>
     </div>
 </script>
 
@@ -141,6 +142,8 @@
                 $('#initial-row').hide();
                 initialValueElem.val(null);
             }
+
+            showDbusInfo(pathData)
         };
 
         var showStatusMessage = function showStatusMessage(msg) {
@@ -154,6 +157,12 @@
             // fa-info-circle fa-exclamation-circle
             selector.html("<i class=\"fa ".concat(iconClass, " fa-2x\"></i><i>").concat(message, "</i>")).show();
         };
+
+        var showDbusInfo = function showDbusInfo(ser) {
+            console.log(node)
+            $('#dbusinfo').html("<hr />DBus commandline equivalent: <br /><tt>dbus -y "+node.service+" "+ser.path+" GetValue</tt>");
+            $('#dbusinfo').show();
+        }
 
         var showEnumInfo = function showEnumInfo(enumObj) {
             var msg = Object.entries(enumObj).map(function (item, key) {
@@ -212,6 +221,7 @@
                     var msg = "Multiple ".concat(nodeLabelLower, "s were found with the same name. You can set a custom name for the device in Venus settings.");
                     changeStatusText($('#duplicatesinfo'), 'fa-info-circle', msg);
                 }
+
             } else { // otherwise, disable inputs and show a pretty statusmessage
                 node.serviceObj ? showStatusMessage("There are no ".concat(nodeLabelLower, " services available. Please check that the selected ").concat(node.serviceObj.name, " is properly connected.")) : showStatusMessage("There are no ".concat(nodeLabelLower, " services available. Please check that a ").concat(nodeLabelLower, " is connected or try a different node."));
             }
